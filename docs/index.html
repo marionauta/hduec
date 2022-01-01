@@ -74,11 +74,12 @@
       margin-bottom: 5rem;
     }
 
-    a.button {
+    button {
       background: var(--red);
+      border: 0;
       border-radius: .5rem;
       color: #fff;
-      display: inline-block;
+      margin: 0.25rem;
       padding: .75rem 2rem;
       text-transform: uppercase;
     }
@@ -99,10 +100,6 @@
         <div>=</div>
         <div>1 HDUE Coin</div>
       </div>
-
-      <a class=button href=https://mumbai.polygonscan.com/token/0xe15e50f71be2c7c417e89aeefc4dd7e3757cb1ed>
-        Ver contrato
-      </a>
     </header>
 
     <h2>¿Qué es hamburguesa de 1€ coin?</h2>
@@ -165,11 +162,26 @@
     <p>
       Totalmente, no se me ocurriría bromear con algo tan importante como las
       hamburguesas de un euro. <strong>Hamburguesa de 1€ coin</strong> es un
-      token ERC-20 desplegado en la cadena de bloques de Polygon.
+      token ERC-20 desplegado en la cadena de bloques de Polygon*.
     </p>
     <p>
-      Entrando en Polygonscan puedes ver el contrato, las transacciones,
-      el precio y la capitalización de mercado.
+      Entrando en
+      <a href=https://mumbai.polygonscan.com/token/0x7bf30d704adf961f0050f7979302d57133f9d130>Polygonscan</a>
+      puedes ver el contrato, las transacciones, el precio y la capitalización
+      de mercado.
+    </p>
+    <p>
+      Puedes añadir <strong>HDUE Coin</strong> a tu cartera (en sobremesa)
+      siguiendo:
+      <ol>
+        <li>Instalar MetaMask si no lo tienes.</li>
+        <li><button id=addPolygon>Añadir la red Polygon</button></li>
+        <li><button id=addHduec>Añadir HDUE Coin</button></li>
+      </ol>
+    </p>
+    <p>
+      *De momento está desplegado en la testnet de Polygon mientras termino de
+      hacer algunas pruebas. Pronto estará disponible en la mainnet.
     </p>
 
     <h2>¿Debería invertir en Hamburguesa de 1€ coin?</h2>
@@ -177,14 +189,50 @@
       No.
     </p>
 
-    <h2>¿Tienes más dudas?</h2>
+    <h2>¿Preguntas?</h2>
     <p>
-      Puedes contactarme por twitter en
-      <a href=https://twitter.com/marionauta>@marionauta</a> o por cualquiera de
-      mis redes que puedes encontrar en
+      Si tienes dudas, sugerencias o propuestas, puedes contactarme por twitter
+      en <a href=https://twitter.com/marionauta>@marionauta</a> o por cualquiera
+      de mis redes que puedes encontrar en
       <a href=https://mario.nachbaur.dev/social>mi web</a>.
     </p>
   </div>
+  <script>
+    addPolygon.onclick = async function() {
+      try {
+        await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: '0x13881',
+            chainName: 'Polygon Testnet',
+            nativeCurrency: {
+              name: 'MATIC',
+              symbol: 'MATIC',
+              decimals: 18,
+            },
+            rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
+            blockExplorerUrls: ['https://mumbai.polygonscan.com'],
+          }]
+        })
+      } catch (error) {
+        alert(error.message)
+      }
+    }
+    addHduec.onclick = async function() {
+      const success = ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: '0x7bf30d704adf961f0050f7979302d57133f9d130',
+            symbol: 'HDUEC',
+            decimals: 18,
+            image: 'https://hamburguesadeuneurocoin.nachbaur.dev/favicon.svg',
+          }
+        }
+      })
+    }
+  </script>
 </body>
 
 </html>
